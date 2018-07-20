@@ -7,9 +7,9 @@
       <div class="b-custom-tree-node" slot-scope="{ node, data }">
         <div class="label">{{ node.label }}</div>
         <div class="action">
-          <span @click="removeCate(node, data)">删除</span>
-          <span @click="showEditPanel">编辑</span>
-          <span @click="showAddPanel">添加</span>
+          <span @click="handleRemoveCate(node, data)">删除</span>
+          <span @click="handleEditCate(node, data)">编辑</span>
+          <span @click="handleAddCate(node, data)">添加</span>
           <!-- <b-button type="cancel">删除</b-button> -->
           <!-- <b-button type="primary">编辑</b-button> -->
         </div>
@@ -24,12 +24,13 @@
           required
           :labelText="'类别名称'">
           <b-input
-            placeholder="请在此输入类别名称">
+            v-model="editCateName"
+            :placeholder="currentTreeData ? currentTreeData.label : '请输入类别名称'">
           </b-input>
         </b-form-item>
         <b-button-group>
           <b-button type="cancel" @click.native="editPanelVisible = false">取消</b-button>
-          <b-button type="primary" @click.native="editPanelVisible = false">提交</b-button>
+          <b-button type="primary" @click.native="editCate">提交</b-button>
         </b-button-group>
       </b-form>
     </b-modal>
@@ -42,12 +43,21 @@
           required
           :labelText="'类别名称'">
           <b-input
-            placeholder="请在此输入类别名称">
+            v-model="addCateName"
+            placeholder="请输入类别名称">
+          </b-input>
+        </b-form-item>
+        <b-form-item
+          required
+          :labelText="'类别id'">
+          <b-input
+            v-model="addCateId"
+            placeholder="请输入类别id">
           </b-input>
         </b-form-item>
         <b-button-group>
           <b-button type="cancel" @click.native="editPanelVisible = false">取消</b-button>
-          <b-button type="primary" @click.native="editPanelVisible = false">提交</b-button>
+          <b-button type="primary" @click.native="addCate">提交</b-button>
         </b-button-group>
       </b-form>
     </b-modal>
@@ -103,12 +113,63 @@ export default {
         { value: '2', label: '吐'}
       ],
       allTypesClone: JSON.parse(JSON.stringify(allTypes)),
+      currentTreeNode: null,
+      currentTreeData: null,
       editPanelVisible: false,
-      addPanelVisible: false
+      addPanelVisible: false,
+      addCateName: '',
+      addCateId: '',
+      editCateName: ''
+    }
+  },
+  watch: {
+    editCateName (val) {
+      console.log('watch-editCateName', val)
+    },
+    editPanelVisible (val) {
+      console.log('watch-editPanelVisible', val)
+      if (!val) {
+        this.currentTreeNode = null
+        this.currentTreeData = null
+        this.editCateName = ''
+      }
+    },
+    addPanelVisible (val) {
+      if (!val) {
+        this.currentTreeNode = null
+        this.currentTreeData = null
+        this.addCateName = ''
+        this.addCateId = ''
+      }
     }
   },
   methods: {
-    removeCate (node, data) {
+    handleEditCate (node, data) {
+      this.showEditPanel()
+      this.currentTreeNode = node
+      this.currentTreeData = data
+    },
+    editCate () {
+      this.currentTreeData.label = this.editCateName
+      this.hideEditPanel()
+    },
+    handleAddCate (node, data) {
+      this.showAddPanel()
+      this.currentTreeNode = node
+      this.currentTreeData = data
+    },
+    addCate () {
+      let newChild = {
+        id: this.addCateId,
+        label: this.addCateName
+      }
+      if (!this.currentTreeData.children) {
+        this.$set(this.currentTreeData, 'children', [])
+      }
+      this.currentTreeData.children.push(newChild)
+      this.hideAddPanel()
+    },
+    handleRemoveCate (node, data) {
       const parent = node.parent
       const children = parent.data.children || parent.data
       const index = children.findIndex(d => d.id === data.id)
@@ -117,9 +178,15 @@ export default {
     showEditPanel () {
       this.editPanelVisible = true
     },
+    hideEditPanel () {
+      this.editPanelVisible = false
+    },
     showAddPanel () {
       this.addPanelVisible = true
     },
+    hideAddPanel () {
+      this.addPanelVisible = false
+    }
   }
 }
 </script>
