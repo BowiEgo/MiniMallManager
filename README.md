@@ -22,4 +22,5 @@ yarn run build
 ```
 
 #### Preview
+
 ![截图1](http://o9kkuebr4.bkt.clouddn.com/FireShot%20Capture%20001%20-%20mini-mall-manager%20-%20http___localhost_8080_%23_goods_add.png?imageView/2/w/1280/q/100)
