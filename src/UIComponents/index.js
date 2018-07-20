@@ -6,9 +6,11 @@ import BButton from './Button'
 import BForm from './Form'
 import BFormItem from './Form/FormItem'
 import BInput from './Input'
+import BModal from './Modal'
 import BOption from './Option'
 import BSelect from './Select/index.js'
 import BUpload from './Upload/index.js'
+import BTree from './Tree/index.js'
 import NavMenu from './NavMenu/index.js'
 import MenuItem from './NavMenu/src/MenuItem'
 import BSubMenuItem from './NavMenu/src/SubMenuItem'
@@ -20,9 +22,11 @@ const components = [
   BForm,
   BFormItem,
   BInput,
+  BModal,
   BOption,
   BSelect,
   BUpload,
+  BTree,
   NavMenu,
   MenuItem,
   BSubMenuItem,

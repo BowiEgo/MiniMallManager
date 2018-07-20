@@ -42,7 +42,7 @@ export default {
           children: [
             {
               text: '类别',
-              path: '#'
+              path: '/category'
             },
             {
               text: '品牌',
