@@ -6,15 +6,15 @@
     v-show="node.visible"
     @click.stop="handleClick">
     <div class="b-tree-node__content"
-      :style="{ paddingLeft: node.level * 20 + 'px'}">
+      :style="{ paddingLeft: node.level * 20 + 'px', height: itemHeight }">
       <i
         class="fa fa-caret-right icon-right"
         :class="{
           'transparent' : node.childNodes.length === 0,
           'is-expanded' : expanded
         }"
-        aria-hidden="true"
-        @click="handleExpandIconClick">
+        :style="{ lineHeight: itemHeight }"
+        aria-hidden="true">
       </i>
       <!-- <input type="checkbox"> -->
       <node-content :node="node"></node-content>
@@ -68,6 +68,11 @@ export default {
     },
     renderContent: Function
   },
+  computed: {
+    itemHeight () {
+      return this.tree.store.itemHeight
+    }
+  },
   watch: {
     'node.expanded' (val) {
       this.$nextTick(() => this.expanded = val)
@@ -93,15 +98,16 @@ export default {
     if (this.node.expanded) {
       this.expanded = true
     }
+    this.node.instance = this
   },
   methods: {
     handleClick () {
+      this.tree.store.expandOnClickNode && this.handleExpand()
+    },
+    handleExpand () {
       const store = this.tree.store
       store.setCurrentNode(this.node)
-      
-      this.tree.store.expandOnNodeClick && this.handleExpandIconClick()
-    },
-    handleExpandIconClick () {
+
       if (this.expanded) {
         this.node.collapse()
       } else {

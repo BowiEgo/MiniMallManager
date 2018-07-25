@@ -33,6 +33,7 @@ export default {
     }
   },
   props: {
+    value: [String, Number],
     type: {
       type: String,
       default: 'text'
@@ -44,6 +45,12 @@ export default {
     placeholder: {
       type: String,
       default: 'placeholder'
+    }
+  },
+  watch: {
+    value (val, oldVal) {
+      console.log('watch-value-input', val)
+      this.setCurrentValue(val)
     }
   },
   methods: {
@@ -62,6 +69,9 @@ export default {
     },
     handleChange (event) {
       this.$emit('change', event.target.value)
+    },
+    setCurrentValue (val) {
+      this.currentValue = val
     }
   }
 }
