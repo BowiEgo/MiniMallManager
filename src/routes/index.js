@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import CategoryPage from '../pages/Category/CategoryPage'
+import BrandPage from '../pages/Brand/BrandPage'
 import GoodsAddPage from '../pages/Goods/GoodsAddPage'
 
 Vue.use(Router)
@@ -11,10 +12,16 @@ export default new Router({
     {
       path: '/',
       name: 'index',
-    },{
+    },
+    {
       path: '/category',
       name: 'CategoryPage',
       component: CategoryPage
+    },
+    {
+      path: '/brand',
+      name: 'BrandPage',
+      component: BrandPage
     },
     {
       path: '/goods/add',

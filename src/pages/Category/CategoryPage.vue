@@ -1,20 +1,27 @@
 <template>
   <div class="page">
-    <b-tree
-      :data="allTypesClone"
-      :expand-on-click-node="false"
-      default-expand-all>
-      <div class="b-custom-tree-node" slot-scope="{ node, data }">
-        <div class="label">{{ node.label }}</div>
-        <div class="action">
-          <span @click="handleRemoveCate(node, data)">删除</span>
-          <span @click="handleEditCate(node, data)">编辑</span>
-          <span @click="handleAddCate(node, data)">添加</span>
-          <!-- <b-button type="cancel">删除</b-button> -->
-          <!-- <b-button type="primary">编辑</b-button> -->
+    <div class="wrap">
+      <b-tree
+        width="80%"
+        :item-height="'40px'"
+        :data="allTypesClone"
+        :expand-on-click-node="false"
+        :prevent-default-click="true"
+        default-expand-all
+        ref="tree">
+        <div class="b-custom-tree-node" slot-scope="{ node, data }">
+          <div class="label">{{ node.label }}</div>
+          <div class="action">
+            <span @click="handleRemoveCate(node, data)">删除</span>
+            <span @click="handleEditCate(node, data)">编辑</span>
+            <span @click="handleAddCate(node, data)">添加</span>
+            <!-- <b-button type="cancel">删除</b-button> -->
+            <!-- <b-button type="primary">编辑</b-button> -->
+          </div>
+          <div class="click-mask" @click="handleItemClick(node)"></div>
         </div>
-      </div>
-    </b-tree>
+      </b-tree>
+    </div>
     <b-modal
       transitionName="bounce-in"
       title="编辑分类"
@@ -35,7 +42,7 @@
       </b-form>
     </b-modal>
     <b-modal
-      transitionName="bounce-in"
+      transition-name="bounce-in"
       title="添加分类"
       :visible.sync="addPanelVisible">
       <b-form>
@@ -175,6 +182,9 @@ export default {
       const index = children.findIndex(d => d.id === data.id)
       children.splice(index, 1)
     },
+    handleItemClick (node) {
+      node.instance.handleExpand()
+    },
     showEditPanel () {
       this.editPanelVisible = true
     },
@@ -192,15 +202,29 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.b-custom-tree-node
+.wrap
   width 100%
+  background-color #fff
+  padding 20px 0
+.b-custom-tree-node
+  position relative
+  width 100%
+  padding-right 20px
   display flex
   flex-direction row
-  line-height 26px
+  line-height 40px
   justify-content space-between
   .label
     // width 100%
   .action
     float right
+  .click-mask
+    position absolute 
+    width: 84%
+    height 100%
+    left -20px
+    top 0
+    right 0
+    bottom 0
 </style>
 

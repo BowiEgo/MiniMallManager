@@ -46,7 +46,7 @@ export default {
             },
             {
               text: '品牌',
-              path: '#'
+              path: '/brand'
             },
             {
               text: '规格',

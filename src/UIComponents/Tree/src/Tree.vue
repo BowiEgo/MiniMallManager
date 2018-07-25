@@ -1,5 +1,5 @@
 <template>
-  <div class="b-tree" role="tree">
+  <div class="b-tree" role="tree" :style="computedStyle">
     <b-tree-node
       v-for="child in root.childNodes"
       :key="child.uid"
@@ -24,8 +24,18 @@ export default {
     BTreeNode
   },
   props: {
+    styles: {
+      type: Object,
+      default: () => ({})
+    },
+    width: String,
+    itemHeight: String,
     data: Array,
     defaultExpandAll: Boolean,
+    preventDefaultClick: {
+      type: Boolean,
+      default: false
+    },
     expandOnClickNode: {
       type: Boolean,
       default: false
@@ -43,6 +53,11 @@ export default {
     }
   },
   computed: {
+    computedStyle () {
+      return Object.assign(this.styles, {
+        width: this.width
+      })
+    },
     children: {
       set (val) {
         this.data = val
@@ -71,7 +86,9 @@ export default {
     this.store = new TreeStore({
       data: this.data,
       props: this.props,
-      defaultExpandAll: this.defaultExpandAll
+      expandOnClickNode: this.expandOnClickNode,
+      defaultExpandAll: this.defaultExpandAll,
+      itemHeight: this.itemHeight
       // currentNode: this.currentNode
     })
 
@@ -82,6 +99,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-
+.b-tree
+  margin 0 auto
 </style>
 
