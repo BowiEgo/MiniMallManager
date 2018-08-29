@@ -92,7 +92,7 @@ export default {
     }
 
     // console.log('props', props)
-    const props = tree.props || {}
+    // const props = tree.props || {}
     // const chilrenKey = props['children'] || 'children'
 
     if (this.node.expanded) {
@@ -123,7 +123,7 @@ export default {
   display flex
   flex-direction row
   height 26px
-  cursor pointer
+  // cursor pointer
   &:hover
     background-color #d8dadc
 .icon-right

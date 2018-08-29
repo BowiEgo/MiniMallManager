@@ -87,6 +87,6 @@ export default class Node {
   }
 
   get label () {
-    return this.data.label
+    return this.data.label || this.data[this.store.labelProxy]
   }
 }

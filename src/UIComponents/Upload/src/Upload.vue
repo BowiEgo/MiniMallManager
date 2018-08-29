@@ -111,6 +111,8 @@ export default {
     },
     onChange (file, uploadedFiles) {
       console.log('onChange', file, uploadedFiles)
+      const urlList = uploadedFiles.map(item => item.url)
+      this.$emit('input', urlList)
     },
     uploadFiles (files) {
       console.log('uploadFiles', files)

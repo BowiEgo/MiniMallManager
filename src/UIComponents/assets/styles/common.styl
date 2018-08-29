@@ -1,0 +1,49 @@
+.flex
+  display flex
+  &.row
+    flex-direction row
+  &.space-between
+    justify-content space-between
+input, textarea
+  padding 7px 15px
+
+.b-popup__wrapper
+  position fixed
+  top 0
+  left 0
+  right 0
+  bottom 0
+  background-color rgba(0, 0, 0, 0.3)
+  z-index 10001
+
+.el-table__column
+  border-bottom 1px solid #ebeef5
+  background-color #fff
+  .cell
+    line-height 40px
+
+.b-table__header-wrapper
+  .el-table__column
+    border-width 2px
+  .cell
+    font-size 16px
+
+.b-table__body
+  .cell
+    font-size 14px
+    line-height 60px
+  tr
+    &:last-of-type
+      .el-table__column
+        border-width 0
+  .b-table__column-img
+    width 100px
+    height 100px
+    position relative
+    margin 0 auto
+    img
+      width 100%
+      position absolute
+      top 50%
+      left 50%
+      transform translate(-50%, -50%)

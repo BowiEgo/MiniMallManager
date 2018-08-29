@@ -55,8 +55,10 @@ export default {
       this.visible = false
     },
     handleOptionSelect ({ option, byClick }) {
+      console.log('option', option)
       this.$emit('input', option.value)
       this.selectedLabel = option.label
+      this.handleClose()
     }
   }
 }

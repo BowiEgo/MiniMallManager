@@ -55,6 +55,10 @@ export default {
             {
               text: '发布商品',
               path: '/goods/add'
+            },
+            {
+              text: '商品',
+              path: '/goods/list'
             }
           ]
         },
@@ -63,7 +67,7 @@ export default {
           children: [
             {
               text: '订单列表',
-              path: '#'
+              path: '/order/list'
             },
             {
               text: '添加订单',

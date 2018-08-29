@@ -1,34 +1,50 @@
 import Vue from 'vue'
-import './styles/common.styl'
 import CollapseTransition from './transitions/collapse-transition'
-import BButtonGroup from './ButtonGroup'
-import BButton from './Button'
-import BForm from './Form'
-import BFormItem from './Form/FormItem'
-import BInput from './Input'
-import BModal from './Modal'
-import BOption from './Option'
-import BSelect from './Select/index.js'
-import BUpload from './Upload/index.js'
-import BTree from './Tree/index.js'
-import NavMenu from './NavMenu/index.js'
-import MenuItem from './NavMenu/src/MenuItem'
-import BSubMenuItem from './NavMenu/src/SubMenuItem'
+import BButtonGroup from './button-group/index.js'
+import BButton from './button/index.js'
+import BCard from './card/index.js'
+import BCheckbox from './checkbox/index.js'
+import BCheckboxGroup from './checkbox/src/CheckboxGroup.vue'
+import BForm from './form/index.js'
+import BFormItem from './form-item/index.js'
+import BInput from './input/index.js'
+import BModal from './modal/index.js'
+import BOption from './option/index.js'
+import BPanel from './panel/index.js'
+import BSelect from './select/index.js'
+import BSelectDropdown from './select/src/SelectDropdown'
+import BUpload from './upload/index.js'
+import BTable from './table/index.js'
+import BTableColumn from './table/src/TableColumn'
+import BTree from './tree/index.js'
+import NavMenu from './nav-menu/index.js'
+import MenuItem from './nav-menu/src/MenuItem'
+import MessageBox from './message-box/index.js'
+import BSubMenuItem from './nav-menu/src/SubMenuItem'
+import { Message } from '../../node_modules/element-ui'
 
 const components = [
   CollapseTransition,
   BButtonGroup,
   BButton,
+  BCard,
+  BCheckbox,
+  BCheckboxGroup,
   BForm,
   BFormItem,
   BInput,
   BModal,
+  BPanel,
   BOption,
   BSelect,
+  BSelectDropdown,
   BUpload,
+  BTable,
+  BTableColumn,
   BTree,
   NavMenu,
   MenuItem,
+  MessageBox,
   BSubMenuItem,
 ]
 
@@ -38,11 +54,14 @@ const install = function(Vue, opts = {}) {
   components.map(component => {
     Vue.component(component.name, component)
   })
+
+  Vue.prototype.$msgbox = MessageBox
+  Vue.prototype.$confirm = MessageBox.confirm
 }
 
 /* istanbul ignore if */
 if (typeof window !== 'undefined' && window.Vue) {
-  install(window.Vue);
+  install(window.Vue)
 }
 
 // module.exports = {

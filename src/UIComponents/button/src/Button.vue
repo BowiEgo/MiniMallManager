@@ -2,7 +2,8 @@
   <button
     :class="['b-button', typeClass] "
     :style="styles"
-    :disabled="this.disabled ? 'disabled' : false">
+    :disabled="this.disabled ? 'disabled' : false"
+    @click="handleClick">
     <span><slot></slot></span>
   </button>
 </template>
@@ -10,6 +11,7 @@
 <script>
 export default {
   name: 'BButton',
+
   props: {
     type: {
       type: String,
@@ -24,9 +26,16 @@ export default {
       default: false
     }
   },
+
   computed: {
-    typeClass () {
+    typeClass() {
       return this.type ? 'b-button-' + this.type : ''
+    }
+  },
+
+  methods: {
+    handleClick() {
+      this.$emit('click')
     }
   }
 }
@@ -50,9 +59,9 @@ export default {
   &:hover
     opacity 0.9
   &.b-button-primary
-    background-color #556b8d
+    background-color $highlight-color
   &.b-button-cancel
     background-color #8f96a0
   &.b-button-success
-    background-color #27b6af
+    background-color $main-color
 </style>

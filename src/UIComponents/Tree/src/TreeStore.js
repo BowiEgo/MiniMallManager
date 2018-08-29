@@ -19,8 +19,6 @@ export default class TreeStore {
   }
 
   setData (newVal) {
-    console.log(newVal, this.root.data)
-    console.log(newVal !== this.root.data)
     this.root.setData(newVal)
   }
 

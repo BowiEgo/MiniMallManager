@@ -70,7 +70,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import '../../styles/transition.styl'
 .menu-item
   position relative
   width 100%

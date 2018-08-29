@@ -9,13 +9,14 @@
 
 <script>
 export default {
-  name: 'BSelectDropDown'
+  name: 'BSelectDropdown'
 }
 </script>
 
 <style lang="stylus" scoped>
 .b-select-dropdown
-  width 100%
+  min-width 20%
+  // padding-right 10px
   position absolute
   top 40px
   left 0

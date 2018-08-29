@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <div class="b-modal__wrapper"
+    <div class="b-popup__wrapper"
       v-show="!isHide"
       @click.self="handleWrapperClick">
       <transition v-bind:name="transitionName">
@@ -28,35 +28,16 @@
 </template>
 
 <script>
+import popup from '../../utils/mixins/popup'
+
 export default {
   name: 'BModal',
-  data () {
-    return {
-      isHide: true
-    }
-  },
+  mixins: [ popup ],
   props: {
-    transitionName: {
-      type: String,
-      default: 'fade-in-down'
-    },
     title: String,
-    visible: Boolean,
     showClose: {
       type: Boolean,
       default: true
-    }
-  },
-  watch: {
-    visible (val) {
-      if (val) {
-        this.isHide = false
-      } else {
-        setTimeout(() => {
-          this.isHide = true
-        }, 300)
-      }
-      console.log('watch-visible', val)
     }
   },
   methods: {
@@ -72,14 +53,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.b-modal__wrapper
-  position fixed
-  top 0
-  left 0
-  right 0
-  bottom 0
-  background-color rgba(0, 0, 0, 0.3)
-  z-index 10001
 .b-modal
   width 50%
   margin-top 15vh

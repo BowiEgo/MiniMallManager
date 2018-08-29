@@ -49,7 +49,6 @@ export default {
   },
   watch: {
     value (val, oldVal) {
-      console.log('watch-value-input', val)
       this.setCurrentValue(val)
     }
   },

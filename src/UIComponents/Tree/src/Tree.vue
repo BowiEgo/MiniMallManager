@@ -31,6 +31,7 @@ export default {
     width: String,
     itemHeight: String,
     data: Array,
+    labelProxy: String,
     defaultExpandAll: Boolean,
     preventDefaultClick: {
       type: Boolean,
@@ -70,7 +71,6 @@ export default {
   watch: {
     data: {
       handler: function (newVal) {
-        console.log('tree-watch-data', newVal)
         this.store.setData(newVal)
       },
       deep: true
@@ -86,6 +86,7 @@ export default {
     this.store = new TreeStore({
       data: this.data,
       props: this.props,
+      labelProxy: this.labelProxy,
       expandOnClickNode: this.expandOnClickNode,
       defaultExpandAll: this.defaultExpandAll,
       itemHeight: this.itemHeight
@@ -93,7 +94,6 @@ export default {
     })
 
     this.root = this.store.root
-    console.log('tree-root', this.root)
   }
 }
 </script>
@@ -102,4 +102,3 @@ export default {
 .b-tree
   margin 0 auto
 </style>
-

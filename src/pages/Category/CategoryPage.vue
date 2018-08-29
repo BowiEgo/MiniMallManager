@@ -1,10 +1,12 @@
 <template>
   <div class="page">
-    <div class="wrap">
+    <div class="container">
+      <h2>商品分类</h2>
       <b-tree
         width="80%"
         :item-height="'40px'"
-        :data="allTypesClone"
+        :data="categoryTree"
+        :labelProxy="'name'"
         :expand-on-click-node="false"
         :prevent-default-click="true"
         default-expand-all
@@ -23,7 +25,7 @@
       </b-tree>
     </div>
     <b-modal
-      transitionName="bounce-in"
+      transition-name="fade-in-down"
       title="编辑分类"
       :visible.sync="editPanelVisible">
       <b-form>
@@ -32,17 +34,17 @@
           :labelText="'类别名称'">
           <b-input
             v-model="editCateName"
-            :placeholder="currentTreeData ? currentTreeData.label : '请输入类别名称'">
+            :placeholder="currentTreeData ? currentTreeData.name : '请输入类别名称'">
           </b-input>
         </b-form-item>
         <b-button-group>
           <b-button type="cancel" @click.native="editPanelVisible = false">取消</b-button>
-          <b-button type="primary" @click.native="editCate">提交</b-button>
+          <b-button type="success" @click.native="editCate">提交</b-button>
         </b-button-group>
       </b-form>
     </b-modal>
     <b-modal
-      transition-name="bounce-in"
+      transition-name="fade-in-down"
       title="添加分类"
       :visible.sync="addPanelVisible">
       <b-form>
@@ -64,7 +66,7 @@
         </b-form-item>
         <b-button-group>
           <b-button type="cancel" @click.native="editPanelVisible = false">取消</b-button>
-          <b-button type="primary" @click.native="addCate">提交</b-button>
+          <b-button type="success" @click.native="addCate">提交</b-button>
         </b-button-group>
       </b-form>
     </b-modal>
@@ -72,54 +74,14 @@
 </template>
 
 <script>
+import { fetchCategory, addCategory, updateCategory, removeCategory } from '../../api'
+
 export default {
   name: 'CategoryPage',
-  data () {
-    const allTypes = [
-      {
-        id: 1,
-        label: '一级 1',
-        children: [{
-          id: 4,
-          label: '二级 1-1',
-          children: [{
-            id: 9,
-            label: '三级 1-1-1'
-          }, {
-            id: 10,
-            label: '三级 1-1-2'
-          }]
-        }]
-      }, {
-        id: 2,
-        label: '一级 2',
-        children: [{
-          id: 5,
-          label: '二级 2-1'
-        }, {
-          id: 6,
-          label: '二级 2-2'
-        }]
-      }, {
-        id: 3,
-        label: '一级 3',
-        children: [{
-          id: 7,
-          label: '二级 3-1'
-        }, {
-          id: 8,
-          label: '二级 3-2'
-        }]
-      }
-    ]
+  data() {
     return {
       type: '',
-      types: [
-        { value: '0', label: '水'},
-        { value: '1', label: '火'},
-        { value: '2', label: '吐'}
-      ],
-      allTypesClone: JSON.parse(JSON.stringify(allTypes)),
+      categoryTree: [],
       currentTreeNode: null,
       currentTreeData: null,
       editPanelVisible: false,
@@ -130,10 +92,10 @@ export default {
     }
   },
   watch: {
-    editCateName (val) {
+    editCateName(val) {
       console.log('watch-editCateName', val)
     },
-    editPanelVisible (val) {
+    editPanelVisible(val) {
       console.log('watch-editPanelVisible', val)
       if (!val) {
         this.currentTreeNode = null
@@ -141,7 +103,7 @@ export default {
         this.editCateName = ''
       }
     },
-    addPanelVisible (val) {
+    addPanelVisible(val) {
       if (!val) {
         this.currentTreeNode = null
         this.currentTreeData = null
@@ -150,51 +112,96 @@ export default {
       }
     }
   },
+  created() {
+    this.fetchData()
+  },
   methods: {
-    handleEditCate (node, data) {
+    fetchData() {
+      fetchCategory().then(res => {
+      console.log('fetchCategory', res)
+      this.categoryTree = res.data.data
+    })
+    },
+    handleEditCate(node, data) {
       this.showEditPanel()
       this.currentTreeNode = node
       this.currentTreeData = data
     },
-    editCate () {
-      this.currentTreeData.label = this.editCateName
-      this.hideEditPanel()
+    editCate() {
+      // this.currentTreeData.label = this.editCateName
+      let params = {
+        id: this.currentTreeData.id,
+        name: this.editCateName
+      }
+      updateCategory(params).then(res => {
+        console.log(res)
+        if(res.data.success === true) {
+          this.fetchData()
+          this.hideEditPanel()
+        } else {
+          console.error(res.data.message)
+        }
+      })
     },
-    handleAddCate (node, data) {
+    handleAddCate(node, data) {
       this.showAddPanel()
       this.currentTreeNode = node
       this.currentTreeData = data
+      console.log('currentTreeData', this.currentTreeData)
     },
-    addCate () {
+    addCate() {
       let newChild = {
         id: this.addCateId,
-        label: this.addCateName
+        parentId: this.currentTreeData.id,
+        name: this.addCateName
       }
-      if (!this.currentTreeData.children) {
-        this.$set(this.currentTreeData, 'children', [])
-      }
-      this.currentTreeData.children.push(newChild)
-      this.hideAddPanel()
+      addCategory(newChild).then(res => {
+        if(res.data.success === true) {
+          this.fetchData()
+          this.hideAddPanel()
+        } else {
+          console.error(res.data.message)
+        }
+      })
     },
-    handleRemoveCate (node, data) {
-      const parent = node.parent
-      const children = parent.data.children || parent.data
-      const index = children.findIndex(d => d.id === data.id)
-      children.splice(index, 1)
+    handleRemoveCate(node, data) {
+      this.$confirm('是否删除该分类?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        removeCategory({
+          id: data.id
+        }).then(res => {
+          if(res.data.success === true) {
+            this.fetchData()
+          } else {
+            let msg = ''
+            res.data.message.map(item => {
+              for(let key in item) {
+                msg += `${key}: ${item[key]} `
+              }
+            })
+            alert(msg)
+          }
+        })
+      }).catch(() => {
+        console.log('cancelRemoveCate')
+      })
     },
-    handleItemClick (node) {
+    handleItemClick(node) {
       node.instance.handleExpand()
     },
-    showEditPanel () {
+    showEditPanel() {
       this.editPanelVisible = true
     },
-    hideEditPanel () {
+    hideEditPanel() {
       this.editPanelVisible = false
     },
-    showAddPanel () {
+    showAddPanel() {
       this.addPanelVisible = true
     },
-    hideAddPanel () {
+    hideAddPanel() {
       this.addPanelVisible = false
     }
   }
@@ -202,8 +209,9 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.wrap
+.container
   width 100%
+  min-height 100%
   background-color #fff
   padding 20px 0
 .b-custom-tree-node
@@ -215,9 +223,18 @@ export default {
   line-height 40px
   justify-content space-between
   .label
+    user-select none
     // width 100%
   .action
     float right
+    font-size 12px
+    user-select none
+    span
+      margin 0 10px
+      user-select none
+      cursor pointer
+      &:hover
+        color #00bcd4
   .click-mask
     position absolute 
     width: 84%
