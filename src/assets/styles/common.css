@@ -1,0 +1,10 @@
+.round {
+  border-radius: 30px;
+}
+.round-all {
+  border-radius: 50%;
+}
+.page {
+  flex: 1;
+  padding: 15px;
+}

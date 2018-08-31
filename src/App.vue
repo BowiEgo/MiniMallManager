@@ -22,6 +22,9 @@ export default {
 </script>
 
 <style>
+@import './UIComponents/assets/styles/main.css';
+@import './assets/styles/common.css';
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -38,6 +41,4 @@ export default {
   align-items: stretch;
 }
 </style>
-<style lang="stylus">
-@import './assets/styles/common.styl'
-</style>
+

@@ -9,7 +9,6 @@ import './UIComponents/assets/css/font-awesome.min.css'
 
 // Vue.use(ElementUI)
 import UIComponents from './UIComponents'
-import './UIComponents/assets/styles/main.styl'
 Vue.use(UIComponents)
 
 Vue.config.productionTip = false

@@ -59,9 +59,9 @@ export default {
   &:hover
     opacity 0.9
   &.b-button-primary
-    background-color $highlight-color
+    background-color var(--main-color)
   &.b-button-cancel
     background-color #8f96a0
   &.b-button-success
-    background-color $main-color
+    background-color var(--highlight-color)
 </style>

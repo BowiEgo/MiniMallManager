@@ -1,4 +1,6 @@
 import Vue from 'vue'
+// import './assets/styles/main.styl'
+// import './assets/styles/main.css'
 import CollapseTransition from './transitions/collapse-transition'
 import BButtonGroup from './button-group/index.js'
 import BButton from './button/index.js'
@@ -22,7 +24,6 @@ import MenuItem from './nav-menu/src/MenuItem'
 import MessageBox from './message-box/index.js'
 import BSubMenuItem from './nav-menu/src/SubMenuItem'
 import { Message } from '../../node_modules/element-ui'
-
 const components = [
   CollapseTransition,
   BButtonGroup,

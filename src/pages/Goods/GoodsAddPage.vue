@@ -104,17 +104,20 @@
       <b-form-item
         required
         :labelText="'商品规格'">
-        <b-button>添加规格</b-button>
-        <b-checkbox-group
-          v-model="spec"
-          v-for="(item, index) in specList"
-          :key="index">
-          <b-checkbox
-            v-for="(spec, idx) in item.children"
+        <div class="spec-wrap">
+          <b-button :styles="{ width: '100px' }">添加规格</b-button>
+          <b-checkbox-group
+            v-model="specList.value"
+            v-for="(item, index) in specList"
             :label="item.name"
-            :key="idx">
-          </b-checkbox>
-        </b-checkbox-group>
+            :key="index">
+            <b-checkbox
+              v-for="(spec, idx) in item.children"
+              :label="spec.name"
+              :key="idx">
+            </b-checkbox>
+          </b-checkbox-group>
+        </div>
       </b-form-item>
       <b-button-group style="margin-top: 40px">
         <b-button
@@ -151,7 +154,7 @@ export default {
       images: [],
       detail: '',
       specList: [],
-      spec: ''
+      spec: []
     }
   },
 
@@ -161,6 +164,9 @@ export default {
     },
     images(val) {
       console.log('watch-images', val)
+    },
+    specList(val) {
+      console.log('watch-specList', val)
     }
   },
 
@@ -204,5 +210,9 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style scoped>
+.spec-wrap {
+  display: flex;
+  flex-direction: column;
+}
 </style>
